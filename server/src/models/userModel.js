@@ -13,7 +13,7 @@ const addUser = async (userData, res) => {
 const chkMail = async (email) => {
     try {
         const user = await db('users').where('email', email);
-        return true;
+        return user;
     } catch (err) {
         console.error("Failed to execute select to indentify unique mail : ", err);
     }
