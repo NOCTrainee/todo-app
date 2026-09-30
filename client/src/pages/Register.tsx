@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { registerUser } from "../services/userService";
 import { alert } from "../components/swalAlert";
+import Swal from 'sweetalert2';
 
 function Register() {
     const [user, setUser] = useState({
@@ -27,9 +28,26 @@ function Register() {
                 alert('success', data.message);
             } catch (err) {
                 console.error(err.message);
-                if (axios.isAxiosError(err)) {
-                    alert('error', err.response?.data?.message || "Something went wrong");
-                };
+                console.log(err.response?.data);
+                
+                const responseData = err.response?.data;
+
+    if (responseData?.errors) {
+        const errorMessages = responseData.errors
+            .map((issue) => issue.message)
+            .join("\n");
+            Swal.fire({
+            title: "Invalid Input",
+            text: errorMessages,
+            icon: "error"
+            });
+        // alert("error", errorMessages);
+    } else {
+        alert(
+            "error",
+            responseData?.message || "Something went wrong"
+        );
+    }
             }
         }
     }
