@@ -11,3 +11,11 @@ export const alert = (alertType='success',message:string)=>{
       timerProgressBar: true
     });
 }
+
+export const centerAlert = (alertType='success',title,message) => {
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: alertType
+    });
+}

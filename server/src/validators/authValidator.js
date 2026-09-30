@@ -18,3 +18,13 @@ export const signupSchema = z.object({
     .min(3,{message:"Password must be atleast 3 characters long"})
     .max(180,{message:"Password can not be longer than 180 characters"})
 });
+
+export const loginSchema = z.object({
+    email : z
+    .email()
+    .trim()
+    .max(255,{message:"Email can not be longer than 255 characters"}),
+    password: z
+    .string()
+    .max(180,{message:"Password can not be longer than 180 characters"})
+})
