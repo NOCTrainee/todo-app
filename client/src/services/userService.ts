@@ -13,3 +13,13 @@ export const registerUser = async(endpoint,user)=>{
         throw err;
     }
 }
+export const logoutUser = async(endpoint)=>{
+    try{
+        const res = await axios.get(`${API_URL}/${endpoint}`,{withCredentials:true});
+        console.log("service ; ",res.data);
+        return res.data;
+    }catch(err){
+        console.error("Service error : ",err);
+        throw err;
+    }
+}

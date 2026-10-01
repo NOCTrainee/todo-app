@@ -5,7 +5,7 @@ import { alert, centerAlert } from "../components/swalAlert";
 
 import Swal from 'sweetalert2';
 
-export default function Login() {
+export default function Login({onLoginSuccess}) {
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -29,6 +29,7 @@ export default function Login() {
             try {
                 const data = await registerUser('login', user);
                 alert('success', data.message);
+                await onLoginSuccess();
                 navigate("/todo");
             } catch (err) {
                 console.error(err.message);

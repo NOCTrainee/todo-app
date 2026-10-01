@@ -71,7 +71,7 @@ const loginUser = async(req,res)=>{
         });
 
         return res.status(200).json({message:"Login Successful"});
-        alert("Login Successful");
+        // alert("Login Successful");
     }catch(err){
         console.error("Cant fetch the user : ",err);
         return res.status(500).json({
@@ -80,4 +80,17 @@ const loginUser = async(req,res)=>{
     }
 }
 
-export {addUser, loginUser}
+const logout = async(req,res)=>{
+    try{
+        res.clearCookie("token");
+        // res.cookie("token","",{...cookieOptions, maxAge:0});
+        return res.status(200).json({message:"Logout Successful"});
+    }catch(err){
+        console.error("Cant logout the user : ",err);
+        return res.status(500).json({
+            message: "Something went wrong while logging out."
+        });
+    }
+}
+
+export {addUser, loginUser, logout}

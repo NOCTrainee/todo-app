@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config'
 import userRoutes from './routes/userRoutes.js';
+import todoRoutes from './routes/todoRoutes.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/user',userRoutes);
-
+app.use('/todo',todoRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT,()=> {
