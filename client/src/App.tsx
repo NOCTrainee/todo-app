@@ -2,9 +2,10 @@ import Register from './pages/Register'
 import Login from './pages/Login';
 import Todo from './pages/Todo';
 import Navbar from './pages/Navbar';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes,Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import NotFound from './pages/NotFound';
 
 axios.defaults.withCredentials = true;
 
@@ -51,9 +52,10 @@ function App() {
       />
 
       <Routes>
-        <Route path='/register' element={<Register />} />
-        <Route path='/' element={<Login onLoginSuccess={handleLoginSuccess} />} />
-        <Route path='/todo' element={<Todo user={user} />} />
+        <Route path='/register' element={user? <Navigate to='/todo'/> :<Register />} />
+        <Route path='/' element={user? <Navigate to='/todo'/> :<Login onLoginSuccess={handleLoginSuccess} />} />
+        <Route path='/todo' element={ user ? <Todo user={user} /> : <Navigate to='/'/>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

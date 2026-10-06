@@ -1,4 +1,4 @@
-import { addTodo, getTodoByUserId, getTodoById, updateTodo as updatetodo, deleteTodo as delTodo } from '../models/todoModel.js';
+import { addTodo, getTodoByUserId, getTodoById as getTodoByid, updateTodo as updatetodo, deleteTodo as delTodo } from '../models/todoModel.js';
 import { createTodoSchema, updateTodoSchema } from '../validators/todoValidator.js';
 
 const createTodo = async (req, res) => {
@@ -31,6 +31,20 @@ const getTodos = async (req, res) => {
     }
 }
 
+const getTodoById = async (req, res) => {
+    try{
+        const todoId = req.params.id;
+        const todo = await getTodoByid(todoId);
+        if(!todo){
+            return res.status(404).json({message: "Todo not found"});
+        }
+        return res.status(200).json({todo});
+    }catch(err){
+        console.error("Cant fetch todo : ", err);
+        return res.status(500).json({message: "Something went wrong while fetching the todo"});
+    }
+}
+
 const updateTodo = async(req,res) => {
     try{
         const updateValidation = updateTodoSchema.safeParse(req.body);
@@ -41,7 +55,14 @@ const updateTodo = async(req,res) => {
 
         const userId = req.userDetails.id;
         const {id} = req.params;
-        const updatedTodo = await updatetodo(id,userId,req.body);
+        
+        const updatedTodo = await updatetodo(id,userId,updateValidation.data);
+        if (!updatedTodo || updatedTodo.length === 0) {
+            return res.status(404).json({
+                message: "Todo not found"
+            });
+        }
+
         return res.status(200).json({message: "Todo updated successfully", todo: updatedTodo[0]});
     }catch(err){
         console.error("Cant update todo : ",err);
@@ -64,4 +85,4 @@ const deleteTodo = async(req,res) => {
     }
 }
 
-export { createTodo, getTodos, updateTodo, deleteTodo };
+export { createTodo, getTodos, updateTodo, deleteTodo, getTodoById };
