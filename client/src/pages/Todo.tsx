@@ -10,7 +10,15 @@ export default function Todo({ user }) {
     const [title, setTitle] = useState('');
     const [editingTodo, setEditingTodo] = useState(null);
     const [editedTitle, setEditedTitle] = useState('');
+    const curr = new Date();
 
+    const chkDt=(todoDt,comp)=>{    //a day older on created date
+        const toDt = todoDt.substring(8,10);
+        if(curr.getDate()-toDt>=1 && !comp)
+            return true
+        return false;
+    }
+          
     useEffect(() => {
         const fetchTodos = async () => {
             try {
@@ -138,7 +146,7 @@ export default function Todo({ user }) {
                         ) : (
                             <div className="p-2 mx-2">
                                 {todos.map((todo) => (
-                                    <div key={todo.id} className="flex items-center gap-2 p-2 border-b">
+                                    <div key={todo.id} className={`${chkDt(todo.created_at,todo.completed)?"bg-amber-200":""} flex items-center gap-2 p-2 border-b ${todo.completed? "bg-green-200":""}`}>
 
                                         {editingTodo === todo.id ? (
                                             <div className='flex items-center gap-x-3'>
@@ -146,7 +154,7 @@ export default function Todo({ user }) {
                                                 <input type='text' value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} className="flex-1 bg-white text-black rounded-lg p-1 border-2 border-gray-300" />
 
                                                 <div>
-                                                    <button type="button" onClick={() => saveEdit(todo.id)} className='bg-green-400 rounded-2xl p-2 m-1 hover:bg-green-500 hover:cursor-pointer'>
+                                                    <button type="button" onClick={() => saveEdit(todo.id)} className='bg-green-400 rounded-2xl p-2 m-1 hover:bg-green-600 hover:cursor-pointer'>
                                                         <MdOutlineDone />
                                                     </button>
 
@@ -176,11 +184,11 @@ export default function Todo({ user }) {
                                                     <button type="button" onClick={() => {
                                                         setEditingTodo(todo.id);
                                                         setEditedTitle(todo.title);
-                                                    }} className="p-1 text-blue-500 hover:text-blue-700 cursor-pointer">
+                                                    }} className="p-1 text-blue-500 hover:text-blue-700 cursor-pointer" title="click to edit">
                                                         <MdModeEditOutline />
                                                     </button>
 
-                                                    <button type="button" onClick={() => handleDel(todo)} className="p-1 text-red-500 hover:text-red-700 cursor-pointer">
+                                                    <button type="button" onClick={() => handleDel(todo)} className="p-1 text-red-500 hover:text-red-700 cursor-pointer" title="click to delete">
                                                         <MdDelete />
                                                     </button>
                                                 </div>

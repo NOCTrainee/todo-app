@@ -55,7 +55,7 @@ function App() {
         <Route path='/register' element={user? <Navigate to='/todo'/> :<Register />} />
         <Route path='/' element={user? <Navigate to='/todo'/> :<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path='/todo' element={ user ? <Todo user={user} /> : <Navigate to='/'/>} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={user? <Navigate to='/todo'/>:<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

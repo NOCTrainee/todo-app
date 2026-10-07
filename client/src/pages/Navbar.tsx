@@ -23,7 +23,7 @@ export default function Navbar({ user, onLogout }) {
             </h1>
 
             {user && (
-                <button
+                <button title='click to logout'
                     className="text-white font-bold text-center bg-red-400 rounded-lg p-2 cursor-pointer hover:bg-red-500 outline outline-1"
                     onClick={handleLogout}
                 >
